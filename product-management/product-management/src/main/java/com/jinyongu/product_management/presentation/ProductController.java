@@ -1,0 +1,27 @@
+package com.jinyongu.product_management.presentation;
+
+import com.jinyongu.product_management.domain.Product;
+import com.jinyongu.product_management.application.SimpleProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+// 클라이언트로부터 들어오는 요청을 받고 응답하는 역할
+// 표현계층으로 들어온 데이터의 유효성 검사 후 응용계층으로
+@RestController
+public class ProductController {
+
+    private SimpleProductService simpleProductService;
+
+    @Autowired
+    ProductController(SimpleProductService simpleProductService) {
+        this.simpleProductService = simpleProductService;
+    }
+
+    @RequestMapping(value="/products", method = RequestMethod.POST)
+    public Product createProduct(@RequestBody Product product) {
+        return simpleProductService.add(product);
+    }
+}
