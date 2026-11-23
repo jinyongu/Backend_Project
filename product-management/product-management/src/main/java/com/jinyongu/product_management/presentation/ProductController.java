@@ -21,7 +21,7 @@ public class ProductController {
     }
 
     @RequestMapping(value="/products", method = RequestMethod.POST)
-    public Product createProduct(@RequestBody Product product) {
-        return simpleProductService.add(product);
+    public ProductDto createProduct(@RequestBody ProductDto productDto) {
+        return simpleProductService.add(productDto);
     }
 }

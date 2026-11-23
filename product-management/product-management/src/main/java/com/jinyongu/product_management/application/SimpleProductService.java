@@ -2,6 +2,8 @@ package com.jinyongu.product_management.application;
 
 import com.jinyongu.product_management.domain.Product;
 import com.jinyongu.product_management.infrastructure.ListProductRepository;
+import com.jinyongu.product_management.presentation.ProductDto;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,15 +13,26 @@ import org.springframework.stereotype.Service;
 public class SimpleProductService {
 
     private ListProductRepository listProductRepository;
+    private ModelMapper modelMapper;
 
     @Autowired
-    SimpleProductService(ListProductRepository listProductRepository) {
+    SimpleProductService(ListProductRepository listProductRepository, ModelMapper modelMapper) {
         this.listProductRepository = listProductRepository;
+        this.modelMapper = modelMapper;
     }
 
-    public Product add(Product product){
+    public ProductDto add(ProductDto productDto){
+        // ProductDto를 Product로 변환
+        Product product = modelMapper.map(productDto, Product.class);
+
+        // 레포지토리를 호출
         Product savedProduct = listProductRepository.add(product);
-        return savedProduct;
+
+        // Product를 ProductDto로 변환
+        ProductDto savedProductDto = modelMapper.map(savedProduct, ProductDto.class);
+
+        // ProductDto 반환
+        return savedProductDto;
     }
 
 }
