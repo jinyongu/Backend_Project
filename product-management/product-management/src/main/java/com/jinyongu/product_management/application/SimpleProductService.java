@@ -59,4 +59,13 @@ public class SimpleProductService {
         return productDtos;
     }
 
+    // ModelMapper를 통해 DTO에서 변환된 Product를 수정되기 전의 Product와 바꾸기
+    // Product 인스턴스 값 X, Product 자체를 통째로
+    public ProductDto update(ProductDto productDto) {
+        Product product = modelMapper.map(productDto, Product.class);
+        Product updatedProduct = listProductRepository.update(product);
+        ProductDto updatedProductDto = modelMapper.map(updatedProduct, ProductDto.class);
+        return updatedProductDto;
+    }
+
 }
