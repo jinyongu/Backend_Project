@@ -19,4 +19,21 @@ public class ListProductRepository {
         products.add(product);
         return product;
     }
+
+    public Product findById(Long id) {
+        return products.stream()
+                .filter(product -> product.sameId(id))
+                .findFirst()
+                .orElseThrow(); // Optional 객체가 비어있으면 'NoSuchElementException', Product가 들어있으면 Product
+    }
+
+    public List<Product> findAll() {
+        return products;
+    }
+
+    public List<Product> findByNameContaining(String name) {
+        return products.stream()
+                .filter(product -> product.containsName(name))
+                .toList();
+    }
 }

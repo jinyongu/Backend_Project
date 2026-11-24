@@ -7,6 +7,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 // 표현 계층에서 넘겨받은 새로운 자원을 저장하거나 저장되어 있던 자원 조회
 // 조회된 도메인 객체의 메서드를 실행
 @Service
@@ -33,6 +35,28 @@ public class SimpleProductService {
 
         // ProductDto 반환
         return savedProductDto;
+    }
+
+    public ProductDto findById(Long id) {
+        Product product = listProductRepository.findById(id);
+        ProductDto productDto  =modelMapper.map(product, ProductDto.class);
+        return productDto;
+    }
+
+    public List<ProductDto> findAll() {
+        List<Product> products = listProductRepository.findAll();
+        List<ProductDto> productDtos = products.stream()
+                .map(product -> modelMapper.map(product, ProductDto.class))
+                .toList();
+        return productDtos;
+    }
+
+    public List<ProductDto> findByNameContaining(String name) {
+        List<Product> products = listProductRepository.findByNameContaining(name);
+        List<ProductDto> productDtos = products.stream()
+                .map(product -> modelMapper.map(product, ProductDto.class))
+                .toList();
+        return productDtos;
     }
 
 }
