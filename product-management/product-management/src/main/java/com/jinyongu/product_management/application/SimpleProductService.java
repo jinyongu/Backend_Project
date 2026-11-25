@@ -16,16 +16,20 @@ public class SimpleProductService {
 
     private ListProductRepository listProductRepository;
     private ModelMapper modelMapper;
+    private ValidationService validationService;
 
     @Autowired
-    SimpleProductService(ListProductRepository listProductRepository, ModelMapper modelMapper) {
+    SimpleProductService(ListProductRepository listProductRepository, ModelMapper modelMapper, ValidationService validationService) {
         this.listProductRepository = listProductRepository;
         this.modelMapper = modelMapper;
+        this.validationService = validationService;
     }
 
     public ProductDto add(ProductDto productDto){
         // ProductDto를 Product로 변환
         Product product = modelMapper.map(productDto, Product.class);
+
+        validationService.checkValid(product);
 
         // 레포지토리를 호출
         Product savedProduct = listProductRepository.add(product);

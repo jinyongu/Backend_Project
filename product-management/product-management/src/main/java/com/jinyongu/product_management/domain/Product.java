@@ -1,13 +1,26 @@
 package com.jinyongu.product_management.domain;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Size;
+
 import java.util.Objects;
 
 // 비즈니스와 관련된 요구사항
 // 다른 계층이나 외부 요소에 의존하지 않도록
+// 도메인 지식에 대한 유효성 검사
 public class Product {
     private Long id;
+
+    @Size(min = 1, max = 100)
     private String name;
+
+    @Max(1_000_000)
+    @Min(0)
     private Integer price;
+
+    @Max(9_999)
+    @Min(0)
     private Integer amount;
 
     public void setId(Long id) {
