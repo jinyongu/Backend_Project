@@ -1,5 +1,6 @@
 package com.jinyongu.product_management.infrastructure;
 
+import com.jinyongu.product_management.domain.EntityNotFoundException;
 import com.jinyongu.product_management.domain.Product;
 import org.springframework.stereotype.Repository;
 import java.util.List;
@@ -24,7 +25,8 @@ public class ListProductRepository {
         return products.stream()
                 .filter(product -> product.sameId(id))
                 .findFirst()
-                .orElseThrow(); // Optional 객체가 비어있으면 'NoSuchElementException', Product가 들어있으면 Product
+                .orElseThrow(() -> new EntityNotFoundException("Not Found Product"));
+        // Optional 객체가 비어있으면 'NoSuchElementException', Product가 들어있으면 Product
     }
 
     public List<Product> findAll() {
