@@ -23,8 +23,21 @@ public class Product {
     @Min(0)
     private Integer amount;
 
-    public void setId(Long id) {
+    // BeanPropertyRowMapper 사용을 위한 setter
+    public void setId(Long id) { // id 값을 위함
         this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 
     public Boolean sameId(Long id) {
@@ -33,6 +46,23 @@ public class Product {
 
     public Boolean containsName(String name) {
         return this.name.contains(name);
+    }
+
+    // SQL 파라미터 값을 쓰기 위한 getter
+    public Long getId() { // UPDATE를 위한 getId
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public Integer getAmount() {
+        return amount;
     }
 
     @Override

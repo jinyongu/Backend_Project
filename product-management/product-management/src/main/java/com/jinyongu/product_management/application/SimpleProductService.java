@@ -1,6 +1,7 @@
 package com.jinyongu.product_management.application;
 
 import com.jinyongu.product_management.domain.Product;
+import com.jinyongu.product_management.infrastructure.DatabaseProductRepository;
 import com.jinyongu.product_management.infrastructure.ListProductRepository;
 import com.jinyongu.product_management.presentation.ProductDto;
 import org.modelmapper.ModelMapper;
@@ -14,13 +15,17 @@ import java.util.List;
 @Service
 public class SimpleProductService {
 
-    private ListProductRepository listProductRepository;
+    // private ListProductRepository listProductRepository;
+    private DatabaseProductRepository databaseProductRepository;
     private ModelMapper modelMapper;
     private ValidationService validationService;
 
+
     @Autowired
-    SimpleProductService(ListProductRepository listProductRepository, ModelMapper modelMapper, ValidationService validationService) {
-        this.listProductRepository = listProductRepository;
+    SimpleProductService(/*ListProductRepository listProductRepository*/DatabaseProductRepository databaseProductRepository,
+                                                                        ModelMapper modelMapper, ValidationService validationService) {
+        // this.listProductRepository = listProductRepository;
+        this.databaseProductRepository = databaseProductRepository;
         this.modelMapper = modelMapper;
         this.validationService = validationService;
     }
@@ -32,7 +37,8 @@ public class SimpleProductService {
         validationService.checkValid(product);
 
         // 레포지토리를 호출
-        Product savedProduct = listProductRepository.add(product);
+        // Product savedProduct = listProductRepository.add(product);
+        Product savedProduct = databaseProductRepository.add(product);
 
         // Product를 ProductDto로 변환
         ProductDto savedProductDto = modelMapper.map(savedProduct, ProductDto.class);
@@ -42,13 +48,15 @@ public class SimpleProductService {
     }
 
     public ProductDto findById(Long id) {
-        Product product = listProductRepository.findById(id);
+        // Product product = listProductRepository.findById(id);
+        Product product = databaseProductRepository.findById(id);
         ProductDto productDto  =modelMapper.map(product, ProductDto.class);
         return productDto;
     }
 
     public List<ProductDto> findAll() {
-        List<Product> products = listProductRepository.findAll();
+        // List<Product> products = listProductRepository.findAll();
+        List<Product> products = databaseProductRepository.findAll();
         List<ProductDto> productDtos = products.stream()
                 .map(product -> modelMapper.map(product, ProductDto.class))
                 .toList();
@@ -56,7 +64,8 @@ public class SimpleProductService {
     }
 
     public List<ProductDto> findByNameContaining(String name) {
-        List<Product> products = listProductRepository.findByNameContaining(name);
+        // List<Product> products = listProductRepository.findByNameContaining(name);
+        List<Product> products = databaseProductRepository.findByNameContaining(name);
         List<ProductDto> productDtos = products.stream()
                 .map(product -> modelMapper.map(product, ProductDto.class))
                 .toList();
@@ -67,13 +76,15 @@ public class SimpleProductService {
     // Product 인스턴스 값 X, Product 자체를 통째로
     public ProductDto update(ProductDto productDto) {
         Product product = modelMapper.map(productDto, Product.class);
-        Product updatedProduct = listProductRepository.update(product);
+        // Product updatedProduct = listProductRepository.update(product);
+        Product updatedProduct = databaseProductRepository.update(product);
         ProductDto updatedProductDto = modelMapper.map(updatedProduct, ProductDto.class);
         return updatedProductDto;
     }
 
     public void delete(Long id) {
-        listProductRepository.delete(id);
+        // listProductRepository.delete(id);
+        databaseProductRepository.delete(id);
     }
 
 }
