@@ -1,7 +1,9 @@
 package com.jinyongu.product_management.infrastructure;
 
 import com.jinyongu.product_management.domain.Product;
+import com.jinyongu.product_management.domain.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -15,8 +17,10 @@ import org.springframework.stereotype.Repository;
 import java.util.Collections;
 import java.util.List;
 
+// 애플리케이션이 서버에 올라가서 서비스되는 환경에서 실행될 때, 데이터 저장과 애플리케이션 서버 간 데이터 공유
 @Repository
-public class DatabaseProductRepository {
+@Profile("prod") // 사용자에게 서비스 제공
+public class DatabaseProductRepository implements ProductRepository {
 
     // private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate; // id를 가져오기 위함
